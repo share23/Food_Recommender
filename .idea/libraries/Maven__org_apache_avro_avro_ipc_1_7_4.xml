@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.avro:avro-ipc:1.7.4">
+    <CLASSES>
+      <root url="jar://D:/ST/IDEA/maven_repository/org/apache/avro/avro-ipc/1.7.4/avro-ipc-1.7.4.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/ST/IDEA/maven_repository/org/apache/avro/avro-ipc/1.7.4/avro-ipc-1.7.4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/ST/IDEA/maven_repository/org/apache/avro/avro-ipc/1.7.4/avro-ipc-1.7.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
