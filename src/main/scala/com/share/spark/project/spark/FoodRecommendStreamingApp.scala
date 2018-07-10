@@ -60,28 +60,28 @@ object FoodRecommendStreamingApp {
 
     //第一次运行，初始化用户的推荐信息
 
-      println("\n=====================system initiallizing...==========================")
-      println("\n[DEBUG]training model...")
-      val firstTrainTime = System.nanoTime()
-      val model = ALS.train(hbaseRatings, rank, numIter, lambda)
-      val firstTrainEndTime = System.nanoTime() - firstTrainTime
-      println("[DEBUG]first training consuming:" + firstTrainEndTime / 1000000000 + "s")
+    println("\n=====================system initiallizing...==========================")
+    println("\n[DEBUG]training model...")
+    val firstTrainTime = System.nanoTime()
+    val model = ALS.train(hbaseRatings, rank, numIter, lambda)
+    val firstTrainEndTime = System.nanoTime() - firstTrainTime
+    println("[DEBUG]first training consuming:" + firstTrainEndTime / 1000000000 + "s")
 
-      println("\n[DEBUG]save recommended data to hbase...")
-      val firstPutTime = System.nanoTime()
+    println("\n[DEBUG]save recommended data to hbase...")
+    val firstPutTime = System.nanoTime()
 
-      //为每一个用户产生初始的推荐食物，取top10
-      for (i <- 1 to 60) {
-        val topRatings = model.recommendProducts(i, 10)
-        var recFoods = ""
-        for (r <- topRatings) {
-          val rating = r.rating.toString.substring(0, 4)
-          recFoods += r.product + ":" + rating + ","
-        }
-        CourseClickCountDAO.put("users", i.toString, "info", "recFoods", recFoods.substring(0, recFoods.length - 1))
+    //为每一个用户产生初始的推荐食物，取top10
+    for (i <- 1 to 60) {
+      val topRatings = model.recommendProducts(i, 10)
+      var recFoods = ""
+      for (r <- topRatings) {
+        val rating = r.rating.toString.substring(0, 4)
+        recFoods += r.product + ":" + rating + ","
       }
-      val firstPutEndTime = System.nanoTime() - firstPutTime
-      println("[DEBUG]finish job consuming:" + firstPutEndTime / 1000000000 + "s")
+      CourseClickCountDAO.put("users", i.toString, "info", "recFoods", recFoods.substring(0, recFoods.length - 1))
+    }
+    val firstPutEndTime = System.nanoTime() - firstPutTime
+    println("[DEBUG]finish job consuming:" + firstPutEndTime / 1000000000 + "s")
 
 
     //实时推荐引擎部分
@@ -90,8 +90,8 @@ object FoodRecommendStreamingApp {
     println(s"[DEBUG]The time interval to refresh model is: $streamingTime s")
 
     //接受实时的用户行为数据
-//    val streamingContext = new StreamingContext(sparkContext, Seconds(streamingTime))
-//    val ssc = new StreamingContext(sparkContext, Seconds(60))
+    //    val streamingContext = new StreamingContext(sparkContext, Seconds(streamingTime))
+    //    val ssc = new StreamingContext(sparkContext, Seconds(60))
 
 
     val ssc = new StreamingContext(sparkContext, Seconds(10))
@@ -101,7 +101,7 @@ object FoodRecommendStreamingApp {
 
     val logs = KafkaUtils.createStream(ssc, zkQuorum, group, topicMap).map(_._2)
     val cleanData = logs.map(line => {
-      val infos =line.split("::")
+      val infos = line.split("::")
       Rating(infos(0).toInt, infos(1).toInt, infos(2).toDouble)
     })
 
@@ -139,9 +139,9 @@ object FoodRecommendStreamingApp {
       println("[DEBUG]finish refresh job,consuming:" + refreshAgainConsumingTime / 1000000000 + " s")
     }
 
-      ssc.start()
-      ssc.awaitTermination()
-      sparkContext.stop()
+    ssc.start()
+    ssc.awaitTermination()
+    sparkContext.stop()
 
   }
 }
