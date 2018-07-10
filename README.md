@@ -12,7 +12,7 @@
 
 ## 系统流程图
 
-![系统流程图](https://upload-images.jianshu.io/upload_images/10228133-213e39daddf36272.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![系统流程图](https://upload-images.jianshu.io/upload_images/10228133-e8d8b4a658c84a49.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 最终效果
 
